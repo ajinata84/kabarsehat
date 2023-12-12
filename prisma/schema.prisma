@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model article {
+  articleId     Int         @id @default(autoincrement()) @db.UnsignedInt
+  created_at    DateTime    @default(now()) @db.Timestamp(0)
+  userId        Int         @db.UnsignedInt
+  title         String      @db.VarChar(255)
+  subtitle      String?     @db.VarChar(255)
+  contents      String?     @db.Text
+  thumbnail_url String      @db.VarChar(255)
+  user          user        @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "article_relation_1")
+  bookmarks     bookmarks[]
+  comments      comments[]
+  tags_map      tags_map[]
+
+  @@index([userId], map: "FK_userId")
+}
+
+model bookmarks {
+  bookmark_id Int      @id @default(autoincrement()) @db.UnsignedInt
+  created_at  DateTime @default(now()) @db.Timestamp(0)
+  user_id     Int      @db.UnsignedInt
+  article_id  Int?     @db.UnsignedInt
+  user        user     @relation(fields: [user_id], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "bookmarks_relation_1")
+  article     article? @relation(fields: [article_id], references: [articleId], onDelete: NoAction, onUpdate: NoAction, map: "bookmarks_relation_2")
+
+  @@index([user_id], map: "bookmarks_relation_1")
+  @@index([article_id], map: "bookmarks_relation_2")
+}
+
+model comments {
+  commentId  Int      @id @default(autoincrement()) @db.UnsignedInt
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  userId     Int      @db.UnsignedInt
+  articleId  Int      @db.UnsignedInt
+  contents   String   @db.Text
+  article    article  @relation(fields: [articleId], references: [articleId], onDelete: NoAction, onUpdate: NoAction, map: "comments_relation_1")
+  user       user     @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "comments_relation_2")
+
+  @@index([articleId], map: "FK_articleId")
+  @@index([userId], map: "comments_relation_2")
+}
+
+model tags {
+  tagId      Int        @id @default(autoincrement()) @db.UnsignedInt
+  created_at DateTime   @default(now()) @db.Timestamp(0)
+  tagName    String     @db.VarChar(255)
+  tags_map   tags_map[]
+}
+
+model tags_map {
+  tagmap_id  Int      @id @default(autoincrement()) @db.UnsignedInt
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  tag_id     Int      @db.UnsignedInt
+  article_id Int      @db.UnsignedInt
+  article    article  @relation(fields: [article_id], references: [articleId], onDelete: NoAction, onUpdate: NoAction, map: "article_relation")
+  tags       tags     @relation(fields: [tag_id], references: [tagId], onDelete: NoAction, onUpdate: NoAction, map: "tag_relation")
+
+  @@index([article_id], map: "article_relation")
+  @@index([tag_id], map: "tag_relation")
+}
+
+model user {
+  userId     Int         @id @default(autoincrement()) @db.UnsignedInt
+  created_at DateTime    @default(now()) @db.Timestamp(0)
+  username   String      @db.VarChar(255)
+  password   String      @db.VarChar(255)
+  article    article[]
+  bookmarks  bookmarks[]
+  comments   comments[]
+}

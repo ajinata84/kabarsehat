@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Istok+Web:wght@400;700&family=Yeseva+One&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-hex: #ecf4d6;
+  --text-blue-hex: #265073;
+  font-family: "Istok Web", "Yeseva One";
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
+}
+::-webkit-scrollbar {
+  width: 5px;
+  background-color: #f5f5f5;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #265073;
+}
+
+body {
+  display: flex;
+  margin: 0;
+  place-items: center;
+  color: rgb(var(--foreground-rgb));
+  background: var(--background-hex);
+  min-height: 100vh;
+  min-width: 320px;
+  justify-content: center;
+}
+
+span {
+  font-weight: 700;
+}
+p {
+  white-space: pre-line;
+}
+
+.yeseva {
+  font-family: 'Yeseva One';
+}
+
+.istok {
+  font-family: 'Istok Web';
+}
+
+.main-body {
+  display: flex;
+  margin: 0;
+  place-items: center;
+  color: rgb(var(--foreground-rgb));
+  background: var(--background-hex);
+  min-height: 100vh;
+  min-width: 320px;
+}
+
+.article-title {
+  color: var(--text-blue-hex);
+  font-family: "Istok Web";
+}
