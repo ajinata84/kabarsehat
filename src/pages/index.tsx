@@ -128,7 +128,7 @@ export default function Home({ articles }: { articles: Article[] }) {
         {!bookmarkLoading ? (
           displayedArticles?.map((e, i) => (
             <Link
-              className="flex w-[80%] my-4"
+              className="flex w-[80%] my-4 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105"
               href={`/article/${e.articleId}`}
               key={`article${i}`}
             >

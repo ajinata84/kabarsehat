@@ -84,6 +84,7 @@ export default function Article({ article }: { article: Article }) {
   const [userId, setuserId] = useState<string>("");
 
   const [isBookmarked, setBookmarked] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -105,6 +106,7 @@ export default function Article({ article }: { article: Article }) {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setLoading(true);
 
     if (newComment.length == 0) return;
 
@@ -124,6 +126,7 @@ export default function Article({ article }: { article: Article }) {
       setNewComment("");
       router.replace(router.asPath);
     }
+    setLoading(false);
   };
 
   const handleBookmark = async () => {
@@ -142,6 +145,11 @@ export default function Article({ article }: { article: Article }) {
       setBookmarked(true);
     }
   };
+
+  const buttonClass =
+    "yeseva outline p-2 rounded bg-[#265073] text-[#ecf4d6] transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110";
+  const loadingClass =
+    "yeseva outline p-2 rounded bg-[#2D9596] text-[#ecf4d6] cursor-wait transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110";
 
   return (
     <RootLayout>
@@ -205,14 +213,17 @@ export default function Article({ article }: { article: Article }) {
               />
               <button
                 type="submit"
-                className="yeseva outline p-2 rounded bg-[#265073] text-[#ecf4d6]"
+                className={isLoading ? loadingClass : buttonClass}
               >
                 Submit
               </button>
             </form>
           )}
           {article.comments.map((c) => (
-            <div className="my-4 outline outline-[#2D9596] outline-4 p-4 rounded" key={c.created_at}>
+            <div
+              className="my-4 outline outline-[#2D9596] outline-4 p-4 rounded"
+              key={c.created_at}
+            >
               <div className="flex flex-row justify-between text-2xl mb-6 yeseva">
                 <span className="">{c.user.username}</span>
                 <span>{new Date(c.created_at).toDateString()}</span>

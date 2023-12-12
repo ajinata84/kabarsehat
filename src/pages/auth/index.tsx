@@ -7,6 +7,7 @@ export default function Index() {
   const router = useRouter();
 
   const [authState, setAuthState] = useState(true);
+  const [isLoading, setLoading] = useState(false);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -15,6 +16,7 @@ export default function Index() {
 
   const registerUser = async (event: React.FormEvent) => {
     event.preventDefault();
+    setLoading(true);
 
     const res = await fetch("/api/register", {
       method: "POST",
@@ -26,10 +28,12 @@ export default function Index() {
     const data = await res.json();
     if (res.status == 200) setApiRes("Registered Succesfully");
     if (res.status == 400) setApiRes(data.message);
+    setLoading(false);
   };
 
   const authUser = async (event: React.FormEvent) => {
     event.preventDefault();
+    setLoading(true);
 
     const res = await fetch("/api/auth", {
       method: "POST",
@@ -48,7 +52,14 @@ export default function Index() {
 
       router.replace("/");
     }
+
+    setLoading(false);
   };
+
+  const buttonClass =
+    "bg-[#265073] text-xl p-2 text-[#ecf4d6] yeseva rounded-xl w-1/2 self-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110";
+  const loadingClass =
+    "bg-[#2D9596] text-xl p-2 text-[#ecf4d6] yeseva rounded-xl w-1/2 self-center cursor-wait transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110";
 
   return (
     <RootLayout>
@@ -79,18 +90,24 @@ export default function Index() {
           />
           <button
             type="submit"
-            className="bg-[#265073] text-xl p-2 text-[#ecf4d6] yeseva rounded-xl w-1/2 self-center"
+            className={isLoading ? loadingClass : buttonClass}
+            disabled={isLoading}
           >
             {authState ? "Login" : "Register"}
           </button>
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-row justify-between ">
             <span
               onClick={() => setAuthState(!authState)}
               className="cursor-pointer "
             >
               {authState ? "Register" : "Login"}
             </span>
-            <span onClick={() => router.replace('/')} className="cursor-pointer">Home</span>
+            <span
+              onClick={() => router.replace("/")}
+              className="cursor-pointer"
+            >
+              Home
+            </span>
           </div>
           <span className="text-yellow-100">{apiRes}</span>
         </form>
