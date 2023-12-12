@@ -51,7 +51,7 @@ export default function Home({ articles }: { articles: Article[] }) {
   const [currentUser, setCurrentUser] = useState<string>("");
   const [currentUserId, setCurrentUserId] = useState<string>("");
 
-  const [displayedArticles, setDisplayedArticles] = useState(articles);
+  const [displayedArticles, setDisplayedArticles] = useState<Article[]>([]);
   const [showBookmarked, setShowBookmarked] = useState(false);
 
   const [bookmarkLoading, setBookmarkLoading] = useState(false);
@@ -82,14 +82,14 @@ export default function Home({ articles }: { articles: Article[] }) {
     };
 
     fetchArticles();
-  }, [showBookmarked]);
+  }, [showBookmarked, articles]);
 
   const handleBookmarkClick = () => {
     setShowBookmarked(!showBookmarked);
   };
 
   return (
-    <RootLayout >
+    <RootLayout>
       <div className="flex justify-center flex-col place-items-center w-full">
         <Image
           src={"/kabarsehatlogo.png"}
@@ -126,7 +126,7 @@ export default function Home({ articles }: { articles: Article[] }) {
         </div>
 
         {!bookmarkLoading ? (
-          displayedArticles.map((e, i) => (
+          displayedArticles?.map((e, i) => (
             <Link
               className="flex w-[80%] my-4"
               href={`/article/${e.articleId}`}
