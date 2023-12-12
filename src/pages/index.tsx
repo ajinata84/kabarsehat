@@ -89,7 +89,7 @@ export default function Home({ articles }: { articles: Article[] }) {
   };
 
   return (
-    <RootLayout>
+    <RootLayout >
       <div className="flex justify-center flex-col place-items-center w-full">
         <Image
           src={"/kabarsehatlogo.png"}
@@ -124,35 +124,39 @@ export default function Home({ articles }: { articles: Article[] }) {
             <Link href={"/auth"}>Login</Link>
           )}
         </div>
-        
-        {!bookmarkLoading ? displayedArticles.map((e, i) => (
-          <Link
-            className="flex w-[80%] my-4"
-            href={`/article/${e.articleId}`}
-            key={`article${i}`}
-          >
-            <div className="flex w-[100%] flex-col outline-[#2D9596] outline-[6px] outline rounded-b-lg">
-              <img
-                src={e.thumbnail_url}
-                alt="test"
-                className="h-[200px] object-cover"
-              />
-              <div className="bg-[#ecf4d6] flex flex-col gap-4 py-6 px-8 rounded-b-lg ">
-                <div className="flex flex-row justify-between ">
-                  <span
-                    className="article-title text-4xl"
-                    style={{ backgroundImage: e.thumbnail_url }}
-                  >
-                    {e.title}
-                  </span>
+
+        {!bookmarkLoading ? (
+          displayedArticles.map((e, i) => (
+            <Link
+              className="flex w-[80%] my-4"
+              href={`/article/${e.articleId}`}
+              key={`article${i}`}
+            >
+              <div className="flex w-[100%] flex-col outline-[#2D9596] outline-[6px] outline rounded-b-lg">
+                <img
+                  src={e.thumbnail_url}
+                  alt="test"
+                  className="h-[200px] object-cover"
+                />
+                <div className="bg-[#ecf4d6] flex flex-col gap-4 py-6 px-8 rounded-b-lg ">
+                  <div className="flex flex-row justify-between ">
+                    <span
+                      className="article-title text-4xl"
+                      style={{ backgroundImage: e.thumbnail_url }}
+                    >
+                      {e.title}
+                    </span>
+                  </div>
+                  <p className="text-ellipsis overflow-hidden text-2xl">
+                    {e.subtitle}
+                  </p>
                 </div>
-                <p className="text-ellipsis overflow-hidden text-2xl">
-                  {e.subtitle}
-                </p>
               </div>
-            </div>
-          </Link>
-        )) : <span className="text-[#265073] yeseva font-normal">Loading...</span>}
+            </Link>
+          ))
+        ) : (
+          <span className="text-[#265073] yeseva font-normal">Loading...</span>
+        )}
       </div>
     </RootLayout>
   );
